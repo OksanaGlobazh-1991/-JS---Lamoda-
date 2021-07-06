@@ -1,3 +1,6 @@
+'use sctrict';
+
+
 const headerCityButton = document.querySelector('.header__city-button');
 
 if (localStorage.getItem('lomoda-location')) {
@@ -14,3 +17,9 @@ headerCityButton.addEventListener ('click', () => {
 //модальное окно
 
 
+const subheaderCart = document.querySelector('.subheader__cart');
+const cartOverlay = document.querySelector('.cart-overlay');
+
+subheaderCart.addEventListener('click', () => {
+    cartOverlay.classList.add('cart-overlay-open');
+});
