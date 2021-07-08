@@ -20,6 +20,19 @@ headerCityButton.addEventListener ('click', () => {
 const subheaderCart = document.querySelector('.subheader__cart');
 const cartOverlay = document.querySelector('.cart-overlay');
 
-subheaderCart.addEventListener('click', () => {
+const cartModalOpen = () => {
     cartOverlay.classList.add('cart-overlay-open');
+};
+
+const cartModalClose = () => {
+    cartOverlay.classList.remove('cart-overlay-open');
+};
+
+subheaderCart.addEventListener('click', cartModalOpen);
+cartOverlay.addEventListener('click', event => {
+    const target = event.target;
+
+    if (target.classList.contains('cart__btn-close')) {
+        cartModalClose();
+    }
 });
