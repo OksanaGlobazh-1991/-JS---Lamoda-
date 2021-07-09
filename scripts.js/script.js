@@ -13,6 +13,17 @@ headerCityButton.addEventListener ('click', () => {
     localStorage.setItem('lomoda-location', city);
 });
 
+//блокировка скролла
+
+const disableScroll = () => {
+        document.body.style.overflow = 'hidden';
+};
+
+const enableScroll = () => {
+        document.body.style.overflow = '';
+
+};
+
 
 //модальное окно
 
@@ -22,10 +33,13 @@ const cartOverlay = document.querySelector('.cart-overlay');
 
 const cartModalOpen = () => {
     cartOverlay.classList.add('cart-overlay-open');
+    disableScroll();
 };
+    
 
 const cartModalClose = () => {
     cartOverlay.classList.remove('cart-overlay-open');
+    enableScroll();
 };
 
 subheaderCart.addEventListener('click', cartModalOpen);
