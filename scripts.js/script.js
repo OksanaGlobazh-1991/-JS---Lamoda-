@@ -65,3 +65,26 @@ cartOverlay.addEventListener('click', event => {
         cartModalClose();
     }
 });
+
+
+//запрос базы данных
+
+
+const getData = async () => {
+
+    const data = await fetch('db.json');
+
+    if(data.ok) {
+        return data.json();
+    } else {
+        throw new Error (`Данные не были получены, ошибка ${data.status} ${data.statusText}`)
+    }
+};
+
+getData()
+    .then(data => {
+    console.log(data);
+})
+    .catch(err => {
+        console.error(err);
+});
