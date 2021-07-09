@@ -16,11 +16,15 @@ headerCityButton.addEventListener ('click', () => {
 //блокировка скролла
 
 const disableScroll = () => {
-        document.body.style.overflow = 'hidden';
+        const widthScroll = window.innerWidth - document.body.offsetWidth;
+        document.body.style.cssText = `
+            overflow: hidden;
+            padding-right: ${widthScroll}px;
+        `;
 };
 
 const enableScroll = () => {
-        document.body.style.overflow = '';
+        document.body.style.cssText = '';
 
 };
 
