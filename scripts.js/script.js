@@ -32,7 +32,7 @@ subheaderCart.addEventListener('click', cartModalOpen);
 cartOverlay.addEventListener('click', event => {
     const target = event.target;
 
-    if (target.classList.contains('cart__btn-close')) {
+    if (target.matches('.cart__btn-close') || target.matches('.cart-overlay')) {
         cartModalClose();
     }
 });
