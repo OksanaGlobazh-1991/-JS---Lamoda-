@@ -178,6 +178,7 @@ try {
         const cardGoodTitle = document.querySelector('.card-good__title');
         const cardGoodPrice = document.querySelector('.card-good__price');
         const cardGoodColor = document.querySelector('.card-good__color');
+        const cardGoodSelectWrapper = document.querySelectorAll('.card-good__select__wrapper');
         const cardGoodColorList = document.querySelector('.card-good__color-list');
         const cardGoodSizes = document.querySelector('.card-good__sizes');
         const cardGoodSizesList = document.querySelector('.card-good__sizes-list');
@@ -204,7 +205,22 @@ try {
             
         };
 
-        getGoods(renderCardGood, 'id', hash);
+        cardGoodSelectWrapper.forEach (item => {
+                item.addEventListener('click', e => {
+                    const target = e.target;
+
+                    if (target.closest('.card-good__select')) {
+                        target.classList.toggle('card-good__select__open');
+                    }
+
+                    if (target.closest('.card-good__select-item')) {
+                        const cardGoodSelect = item.querySelector('.card-good__select');
+                        cardGoodSelect.classList.remove('card-good__select__open');
+                    }
+                });
+        });
+    
+    getGoods(renderCardGood, 'id', hash);
 
 }   catch(err) {
     console.warn(err);
