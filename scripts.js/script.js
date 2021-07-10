@@ -72,11 +72,11 @@ const getData = async () => {
     }
 };
 
-const getGoods = (callback, value) => {
+const getGoods = (callback, prop, value) => {
     getData()
         .then(data => {
             if (value) {
-                callback(data.filter(item => item.category === value))
+                callback(data.filter(item => item[prop] === value))
             } else {
                 callback(data);
             }  
@@ -98,11 +98,16 @@ cartOverlay.addEventListener('click', event => {
 //вывод товаров на страницу
 
 try {
-    console.log(hash);
 
     const goodsList = document.querySelector('.goods__list');
     if (!goodsList) {
         throw 'This is not a goods page!';
+    }
+
+    const goodsTitle = document.querySelector('.goods__title');
+
+    const changeTitle = () => {
+        goodsTitle.textContent = document.querySelector(`[href*='#${hash}']`).textContent;
     }
 
     const createCard = ({ id, preview, cost, brand, name, sizes }) => {
@@ -150,11 +155,56 @@ try {
 
     window.addEventListener('hashchange', () => {
         hash = location.hash.substring(1);
-        getGoods(renderGoodsList, hash);
+        getGoods(renderGoodsList, 'category', hash);
+        changeTitle();
     });
 
+    changeTitle();
+    getGoods(renderGoodsList, 'category', hash);
 
-    getGoods(renderGoodsList, hash);
+}   catch(err) {
+    console.warn(err);
+}
+
+//страница одного товара
+
+try {
+
+    if (!document.querySelector('.card-good')) {
+        throw 'This is not a card-good page';
+    }
+        const cardGoodImage = document.querySelector('.card-good__image');
+        const cardGoodBrand = document.querySelector('.card-good__brand');
+        const cardGoodTitle = document.querySelector('.card-good__title');
+        const cardGoodPrice = document.querySelector('.card-good__price');
+        const cardGoodColor = document.querySelector('.card-good__color');
+        const cardGoodColorList = document.querySelector('.card-good__color-list');
+        const cardGoodSizes = document.querySelector('.card-good__sizes');
+        const cardGoodSizesList = document.querySelector('.card-good__sizes-list');
+        const cardGoodBuy = document.querySelector('.card-good__buy');
+
+        const renderCardGood = ([{brand, name, cost, sizes, color, photo}]) => {
+
+            cardGoodImage.src = `goods-image/${photo}`; 
+            cardGoodImage.alt = `${brand} ${name}`;
+            cardGoodBrand.textContent = brand;   
+            cardGoodTitle.textContent = name;
+            cardGoodPrice.textContent = `${cost}`;
+                if(color)   {
+                    cardGoodColor.textContent = color[0];
+                } else {
+                    cardGoodColor.style.display = 'none';
+                }
+                
+                if(sizes)  {
+                    cardGoodSizes.textContent = sizes[0];
+                }  else {
+                    cardGoodSizes.style.display ='none';
+                }
+            
+        };
+
+        getGoods(renderCardGood, 'id', hash);
 
 }   catch(err) {
     console.warn(err);
