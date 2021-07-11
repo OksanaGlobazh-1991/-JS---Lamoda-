@@ -18,7 +18,12 @@ headerCityButton.addEventListener ('click', () => {
 //блокировка скролла
 
 const disableScroll = () => {
+
+        if (document.disableScroll) return;
+
         const widthScroll = window.innerWidth - document.body.offsetWidth;
+
+        document.disableScroll = true;
 
         document.body.dbScrollY = window.scrollY;
 
@@ -34,6 +39,7 @@ const disableScroll = () => {
 };
 
 const enableScroll = () => {
+    document.disableScroll = false;
         document.body.style.cssText = '';
         window.scroll({
             top: document.body.dbScrollY,
@@ -184,6 +190,11 @@ try {
         const cardGoodSizesList = document.querySelector('.card-good__sizes-list');
         const cardGoodBuy = document.querySelector('.card-good__buy');
 
+        const generateList = data => data.reduce((html, item, i) => html + 
+        `<li class="card-good__select-item" data-id='${i}'>${item}</li>`, '');
+            
+        
+
         const renderCardGood = ([{brand, name, cost, sizes, color, photo}]) => {
 
             cardGoodImage.src = `goods-image/${photo}`; 
@@ -193,32 +204,38 @@ try {
             cardGoodPrice.textContent = `${cost}`;
                 if(color)   {
                     cardGoodColor.textContent = color[0];
+                    cardGoodColor.dataset.id = 0;
+                    cardGoodColorList.innerHTML = generateList(color);
                 } else {
                     cardGoodColor.style.display = 'none';
                 }
                 
                 if(sizes)  {
                     cardGoodSizes.textContent = sizes[0];
+                    cardGoodSizes.dataset.id = 0;
+                    cardGoodSizesList.innerHTML = generateList(sizes);
                 }  else {
                     cardGoodSizes.style.display ='none';
                 }
             
         };
 
-        cardGoodSelectWrapper.forEach (item => {
-                item.addEventListener('click', e => {
-                    const target = e.target;
+    cardGoodSelectWrapper.forEach (item => {
+        item.addEventListener('click', e => {
+                const target = e.target;
 
-                    if (target.closest('.card-good__select')) {
-                        target.classList.toggle('card-good__select__open');
-                    }
+            if (target.closest('.card-good__select')) {
+            target.classList.toggle('card-good__select__open');
+    }
 
-                    if (target.closest('.card-good__select-item')) {
-                        const cardGoodSelect = item.querySelector('.card-good__select');
-                        cardGoodSelect.classList.remove('card-good__select__open');
-                    }
-                });
+            if (target.closest('.card-good__select-item')) {
+                const cardGoodSelect = item.querySelector('.card-good__select');
+                cardGoodSelect.textContent = target.textContent;
+                cardGoodSelect.dataset.id = target.dataset.id;
+                cardGoodSelect.classList.remove('card-good__select__open');
+            }
         });
+    });
     
     getGoods(renderCardGood, 'id', hash);
 
